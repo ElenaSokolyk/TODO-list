@@ -1,0 +1,43 @@
+<div id="edit_task">
+	<div id="header"><h1>Editing task</h1></div><br/>
+
+			<%= form_for([@project, @task], remote: true) do |f| %>
+		  <% if @task.errors.any? %>
+		    <div id="error_explanation">
+		      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+		      <ul>
+		      <% @task.errors.full_messages.each do |msg| %>
+		        <li><%= msg %></li>
+		      <% end %> 
+		      </ul>
+		    </div>
+		  <% end %>
+
+		  <div class="field">
+		    <%= f.label :name %>
+		    <%= f.text_field :name %>
+		  </div>
+		  <div class="project_id">
+		    <%= f.label :project_id %>
+		    <%= f.number_field :project_id %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :status %>
+		    <%= f.check_box :status %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :priority %>
+		    <%= f.number_field :priority %>
+		  </div>
+		  <div class="field">
+		    <%= f.label :deadline %>
+		    <%= f.datetime_select :deadline %>
+		  </div><br/>
+		  <div class="actions">
+		    <center><%= f.submit  %></center>
+		  </div>
+		<% end %>    
+
+	<div id="back"><%= link_to 'Back', projects_path %></div>
+</div>

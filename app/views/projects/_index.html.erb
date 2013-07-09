@@ -1,0 +1,75 @@
+<div id="content">
+<h2>SIMPLE TODO LISTS</h2>
+<h4>FROM RUBY GARAGE</h4>
+
+<% @projects.each do |project| %>
+  <div class="tabl1" id="<%= project.id %>">
+ <table cellpadding="0" cellspacing="0"> 
+   <tr class="complete">
+    <td class="notebook"><%= image_tag "notebook.png" %></td>
+    <td colspan="10"><div class="title"><%= project.name %></div>
+      <div class="del_im">
+        <% edit_project = image_tag "edit_project.png" %>
+        <%= link_to edit_project, edit_project_path(project), remote: true %> | 
+        <% delete_project = image_tag "delete_project.png" %>
+        <%= link_to delete_project, project_path(project), method: :delete, data: { confirm: 'Are you sure?', remote: true } %>
+      </div>
+    </td>  
+   </tr>
+
+   <tr class="line_plus">
+    <td class="plus"><%= image_tag "plus.png" %></td>
+    <td  colspan="10" >
+      <%= form_for(@new_task, method: :post, url: project_tasks_path(project_id: project.id), remote: true) do |f| %>
+        <%= f.text_field :name, placeholder: ' Start typing here to create a task...', class: 'task' %>
+        <%= f.submit 'Add Task', class: 'add_task' %>
+      <% end %>
+    </td>
+  </tr>
+
+  <% @tasks.each do |task| %>
+  <% if task.project_id == project.id %>
+   <tr class="line" id="<%= task.id %>">
+     <td  class="status">
+      <% completed = check_box_tag('status', 'status', task.status)%>
+      <%= link_to completed, completed_project_task_path(task.project_id, task.id), controller: :tasks, method: :put, remote: true %>
+     </td>
+     <td class="empty_cell"></td>
+     <td class="name"><%= task.name %></td>
+     <td class="edit">
+      <div class="ed">
+        <div class="arrows">
+          <% high = image_tag "arrow_up.png",class: "arrow" %>
+          <%= link_to high, high_project_task_path(task.project_id, task.id), controller: :tasks, remote: true %> 
+          <%= image_tag "splitter.png",class: "arrow" %> 
+          <% low = image_tag "arrow_down.png",class: "arrow" %>
+          <%= link_to low, low_project_task_path(task.project_id, task.id), controller: :tasks, remote: true %>
+        </div>| 
+        <% edit_task = image_tag "edit_task.png" %> 
+        <%= link_to edit_task, edit_project_task_path(task.project_id, task.id), remote: true %> |
+        <% delete_task = image_tag "delete_task.png" %>
+        <%= link_to delete_task, project_task_path(task.project_id, task.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true %>
+      </div>
+     </td>
+   </tr>
+ 
+   <% end %>
+   <% end %>
+ </table>
+</div>
+<% end %>
+
+
+
+<center><%= button_to 'Add TODO list', projects_path, method: :post, class: 'add_list', remote: true %></center>  
+</div>
+
+
+
+
+<br />
+ 
+ <div id="copyright"> 
+     © Ruby Garage
+</div>  
+</div>
